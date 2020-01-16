@@ -4,7 +4,7 @@ At the Pioneer Works Tech Lab, we are experimenting with approaches for using OS
 
 We're experimenting with the following workflow:
 
-1. Train a simple computer vision model using [Teachable Machine](https://teachablemachine.withgoogle.com/);
+1. Train a simple computer vision model using [Teachable Machine](https://teachablemachine.withgoogle.com/).
 2. Export the model and Python code for Tensorflow Lite on EdgeTPU.
 3. Load the model and onto the Coral Dev Board.
 4. Retrofit the Python code from Teachable Machine with changes to send messages via OSC.
