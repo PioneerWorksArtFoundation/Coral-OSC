@@ -33,10 +33,20 @@ For this particular experiment, we are using [Teachable Machine](https://github.
 
 Once it's done, export the model for EdgeTPU. Download the model files (a .tflite file and a .txt file). The export dialog will show [this exemplary code snippet](https://github.com/googlecreativelab/teachablemachine-community/blob/master/snippets/markdown/image/edgetpu/python.md), but you can instead use the code in this repository. See the section on running example code below.
 
-### Running a Custom Model on the Coral Dev Board
-
-Next, we need to copy our model files from our local computer onto the Coral Dev Board. Ensure that your board is powered on before attempting to connect via SSH. If you followed the approach suggested in [Coral's Getting Started guide](https://coral.ai/docs/dev-board/get-started/#2-connect-to-the-boards-shell-via-mdt), you should have the `mdt` command installed. If so, the easiest method would be to use `mdt push your-file.txt` to transport a local file on your computer to the Coral Dev Board over SSH. Alternatively, if you're not using `mdt`, you should be able to move the files using the [standard `scp` command](https://www.ssh.com/ssh/scp). See the information on [Coral's "Connect to a Board's Shell" documentation](https://coral.ai/docs/dev-board/mdt/#connect-to-a-boards-shell) to use other SSH tools (besides `mdt`).
+### Running a Example Model on the Coral Dev Board
 
 SSH into your Coral Dev Board using `mdt shell`. Once there, double check that your Coral Dev Board is connected to the internet with `nmcli connection show` or connect it to WIFI with `nmtui`.
 
 Once we've verified that our Coral Dev Board is connected to the internet, we can pull the code from this repo onto the board with `git clone <Git URL for this repository>`. You can find the Git URL for this repository by clicking on the green button labeled "Clone or download" on the home page of this repository (where you are likely reading this). Make sure to select the HTTPS option for the Git URL.
+
+Once the respository has been cloned, `cd` into it. While inside the root directory of the repository, run `pip3 install` to install the required dependencies. Next, try running one of the example models in this repository. For example, the Lysol recoginition example recognizes a common yellow cylindrical Lysol Disinfecting Wipes container.
+
+You can run Lysol example with the following command:
+
+```
+python3 lysol.py -ip <IP Address> -p <Port> --path <OSC Endoint Path>
+```
+
+### Running a Custom Model on the Coral Dev Board
+
+Next, we need to copy our model files from our local computer onto the Coral Dev Board. Ensure that your board is powered on before attempting to connect via SSH. If you followed the approach suggested in [Coral's Getting Started guide](https://coral.ai/docs/dev-board/get-started/#2-connect-to-the-boards-shell-via-mdt), you should have the `mdt` command installed. If so, the easiest method would be to use `mdt push your-file.txt` to transport a local file on your computer to the Coral Dev Board over SSH. Alternatively, if you're not using `mdt`, you should be able to move the files using the [standard `scp` command](https://www.ssh.com/ssh/scp). See the information on [Coral's "Connect to a Board's Shell" documentation](https://coral.ai/docs/dev-board/mdt/#connect-to-a-boards-shell) to use other SSH tools (besides `mdt`).
