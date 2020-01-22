@@ -27,6 +27,13 @@ def classifyImage(image, engine):
     return classifications
 
 
+def get_details_of_best_result(results, labels):
+    best_result = max(results, key=itemgetter(1))
+    best_result_label_index = best_result[0]
+    best_result_score = best_result[1]
+    return {"label": labels[best_result_label_index], "score": best_result_score}
+
+
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.option(
     '-ip', '--ip-address', 'ip_address',
@@ -84,14 +91,10 @@ def main(ip_address, port, path, model_path, labels_path):
         results = classifyImage(pil_im, engine)
         cv2.imshow('frame', cv2_im)
 
-        print(results)
-        bestResult = max(results, key=itemgetter(1))
-        if (bestResult[0] == 0 and bestResult[1] > 0.9):
-            print("Cassette")
-            osc.send_message(path, "ON")
-        else:
-            print("No Cassette")
-            osc.send_message(path, "OFF")
+        # Get the label of the best result and send it with OSC
+        details_of_best_result = get_details_of_best_result(results, labels)
+        print(details_of_best_result)
+        osc.send_message(path, details_of_best_result["label"])
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
