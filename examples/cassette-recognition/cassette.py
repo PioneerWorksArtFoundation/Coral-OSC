@@ -1,4 +1,4 @@
-# from edgetpu.classification.engine import ClassificationEngine
+from edgetpu.classification.engine import ClassificationEngine
 from PIL import Image
 import cv2
 import re
@@ -23,7 +23,7 @@ def loadLabels(labelPath):
 
 def classifyImage(image, engine):
     # Classify and ouptut inference
-    classifications = engine.ClassifyWithImage(image)
+    classifications = engine.classify_with_image(image)
     return classifications
 
 
