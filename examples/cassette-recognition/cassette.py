@@ -1,22 +1,17 @@
-from edgetpu.classification.engine import ClassificationEngine
+# from edgetpu.classification.engine import ClassificationEngine
 from PIL import Image
 import cv2
 import re
 import os
+import click
 from oscpy.client import OSCClient
 from operator import itemgetter
 
-# Setup the OSC Client
-# TODO (Pass IP and port in as arguments)
-osc = OSCClient('192.168.100.89', 8080);
-
-# the TFLite converted to be used with edgetpu
-modelPath = './cassette_model.tflite'
-
-# The path to labels.txt that was downloaded with your model
-labelPath = './labels.txt'
+CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
 # This function parses the labels.txt and puts it in a python dictionary
+
+
 def loadLabels(labelPath):
     p = re.compile(r'\s*(\d+)(.+)')
     with open(labelPath, 'r', encoding='utf-8') as labelFile:
@@ -24,21 +19,52 @@ def loadLabels(labelPath):
         return {int(num): text.strip() for num, text in lines}
 
 # This function takes in a PIL Image from any source or path you choose
-#def classifyImage(image_path, engine)
-def classifyImage(image, engine):
-    # Load and format your image for use with TM2 model
-    # image is reformated to a square to match training
-    # image = Image.open(image_path)
-    # image.resize((224, 224))
 
+
+def classifyImage(image, engine):
     # Classify and ouptut inference
     classifications = engine.ClassifyWithImage(image)
     return classifications
 
-def main():
+
+@click.command(context_settings=CONTEXT_SETTINGS)
+@click.option(
+    '-ip', '--ip-address', 'ip_address',
+    default=None,
+    required=True,
+    help="Used to specify the port that's listening for request on the OSC server handling these OSC messages."
+)
+@click.option(
+    '-p', '--port', 'port',
+    default=None,
+    required=True,
+    help="Used to specify the port that's listening for request on the OSC server handling these OSC messages."
+)
+@click.option(
+    '--path', 'path',
+    default='/',
+    required=True,
+    help="Path (endpoint) at which the OSC server is listening for requests."
+)
+@click.option(
+    '--model', 'model_path',
+    default='./model.tflite',
+    required=True,
+    help="Path to the Tensorflow Lite model file (*.tflite)."
+)
+@click.option(
+    '--labels', 'labels_path',
+    default='./labels.txt',
+    required=True,
+    help="Path to the labels file for the model (*.txt)."
+)
+def main(ip_address, port, path, model_path, labels_path):
+    # Setup the OSC Client
+    osc = OSCClient(ip_address, int(port), encoding="utf8")
+
     # Load your model onto your Coral Edgetpu
-    engine = ClassificationEngine(modelPath)
-    labels = loadLabels(labelPath)
+    engine = ClassificationEngine(model_path)
+    labels = loadLabels(labels_path)
 
     cap = cv2.VideoCapture(0)
     while cap.isOpened():
@@ -57,15 +83,15 @@ def main():
         # Classify and display image
         results = classifyImage(pil_im, engine)
         cv2.imshow('frame', cv2_im)
-        
+
         print(results)
-        bestResult = max(results, key = itemgetter(1))
+        bestResult = max(results, key=itemgetter(1))
         if (bestResult[0] == 0 and bestResult[1] > 0.9):
             print("Cassette")
-            osc.send_message(b'/ping', "ON".encode("utf-8"))
+            osc.send_message(path, "ON")
         else:
             print("No Cassette")
-            osc.send_message(b'/ping', "OFF".encode("utf-8"))
+            osc.send_message(path, "OFF")
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
@@ -73,6 +99,6 @@ def main():
     cap.release()
     cv2.destroyAllWindows()
 
+
 if __name__ == '__main__':
     main()
-
