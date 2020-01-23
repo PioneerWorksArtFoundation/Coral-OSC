@@ -39,7 +39,7 @@ SSH into your Coral Dev Board using `mdt shell`. Once there, double check that y
 
 Once we've verified that our Coral Dev Board is connected to the internet, we can pull the code from this repo onto the board with `git clone <Git URL for this repository>`. You can find the Git URL for this repository by clicking on the green button labeled "Clone or download" on the home page of this repository (where you are likely reading this). Make sure to select the HTTPS option for the Git URL.
 
-Once the respository has been cloned, `cd` into it. While inside the root directory of the repository, run `pip3 install` to install the required dependencies. Next, try running one of the example models in this repository. For example, the Lysol recoginition example recognizes a common yellow cylindrical Lysol Disinfecting Wipes container.
+Once the respository has been cloned, `cd` into it. While inside the root directory of the repository, run `pip3 install -r requirements.txt` to install the required dependencies. Next, try running one of the example models in this repository. For example, the Lysol recoginition example recognizes a common yellow cylindrical Lysol Disinfecting Wipes container.
 
 You can run Lysol example with the following command:
 
