@@ -51,7 +51,7 @@ python3 lysol.py -ip <IP Address> -p <Port> --path <OSC Endoint Path>
 
 Next, we need to copy our model files from our local computer onto the Coral Dev Board. Ensure that your board is powered on before attempting to connect via SSH. If you followed the approach suggested in [Coral's Getting Started guide](https://coral.ai/docs/dev-board/get-started/#2-connect-to-the-boards-shell-via-mdt), you should have the `mdt` command installed. If so, the easiest method would be to use `mdt push your-file.txt` to transport a local file on your computer to the Coral Dev Board over SSH. Alternatively, if you're not using `mdt`, you should be able to move the files using the [standard `scp` command](https://www.ssh.com/ssh/scp). See the information on [Coral's "Connect to a Board's Shell" documentation](https://coral.ai/docs/dev-board/mdt/#connect-to-a-boards-shell) to use other SSH tools (besides `mdt`).
 
-(TODO: COMPLETE THIS DOCUMENTATION)
+Once these files are on your Coral Dev Board, you can move the to the necessary subdirectories using typical Unix operations. You might consider creating a Python script to run your models similar to the ones in the example folder.
 
 ### Testing Your OSC Connection
 
