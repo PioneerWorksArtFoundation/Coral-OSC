@@ -50,3 +50,23 @@ python3 lysol.py -ip <IP Address> -p <Port> --path <OSC Endoint Path>
 ### Running a Custom Model on the Coral Dev Board
 
 Next, we need to copy our model files from our local computer onto the Coral Dev Board. Ensure that your board is powered on before attempting to connect via SSH. If you followed the approach suggested in [Coral's Getting Started guide](https://coral.ai/docs/dev-board/get-started/#2-connect-to-the-boards-shell-via-mdt), you should have the `mdt` command installed. If so, the easiest method would be to use `mdt push your-file.txt` to transport a local file on your computer to the Coral Dev Board over SSH. Alternatively, if you're not using `mdt`, you should be able to move the files using the [standard `scp` command](https://www.ssh.com/ssh/scp). See the information on [Coral's "Connect to a Board's Shell" documentation](https://coral.ai/docs/dev-board/mdt/#connect-to-a-boards-shell) to use other SSH tools (besides `mdt`).
+
+(TODO: COMPLETE THIS DOCUMENTATION)
+
+### Testing Your OSC Connection
+
+In some cases, you may just want to test that you're establishing an OSC connection between the Coral Dev Board and another computer. The `utils` folder in this repository contains scripts for starting an OSC Client and OSC Server.
+
+For example, on your computer, you could run the following command to start an OSC server that listens for OSC messages that are being sent to the IP address, port, and path (endpoint) you specify:
+
+```
+python osc-test-server.py -ip 0.0.0.0 -p <port> --path <path>
+```
+
+You can find your computer's IP address by checking your Network settings or by running `ipconfig getifaddr en0` from the terminal.
+
+On the Coral Dev Board, you could run the following command to start a OSC client that pings the OSC server at the IP address, port and enpoint you specified above with a simple message:
+
+```
+python osc-test-server.py -ip <IP Address of the device running the server> -p <port> --path <path>
+```
